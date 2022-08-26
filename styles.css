@@ -1,0 +1,11 @@
+body, html {
+    box-sizing: border-box;
+    margin: 0%;
+    padding: 0%;
+    height: 100vh;
+    width: 100vw;
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    background: rgb(8, 1, 86);
+    font-family: 'JetBrains Mono', monospace;
+}
