@@ -24,6 +24,7 @@ body {
     flex-direction: column;
     /* justify-content: space-between; */
     align-items: center;
+    min-width: 400px;
     width: 27vw;
     height: 73vh;
     border-radius: 12px;
@@ -36,7 +37,7 @@ body {
 }
 
 .display, .keyboard {
-    width: 90%;
+    width: 95%;
 }
 
 .display {
@@ -49,6 +50,15 @@ body {
 
 .keyboard {
     display: grid;
-    grid-template-rows: repeat(6, 10vh);
-    grid-template-columns: repeat(4, 15vw);
+    min-height: 60vh;
+    grid-template-rows: repeat(6, minmax(50px, 1fr));
+    grid-template-columns: repeat(4, minmax(50px, 1fr));
+    grid-column-gap: 1vw;
+    grid-row-gap: 1vh;
+}
+
+.key {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
