@@ -33,3 +33,20 @@ const operate = function(operator, num1, num2) {
     return total;
 }
 
+const displayDigit = function(e) {
+    // console.log(e);
+    // e.stopPropagation();
+    // console.log(e);
+    const digit = e.target.textContent;
+    digit.trim();
+    if (e.target === e.currentTarget) return;
+    const display = document.querySelector('.display');
+    display.textContent = digit;
+}
+
+const eventListeners = function() {
+    const digits = document.querySelector(".keyboard");
+    digits.addEventListener('click', displayDigit);
+}
+
+eventListeners()
