@@ -33,33 +33,54 @@ const operate = function(operator, num1, num2) {
     return total;
 }
 
-
+const DEF_VALUE = 3.14;
+const digits = document.querySelector(".keyboard");
 const firstValue = [];
-const operator = [];
+let operator = [];
 const secondValue = [];
 
-const displayDigit = function(e) {
-    const digit = e.target.textContent.trim();
+const display = function(e) {
     if (e.target === e.currentTarget) return;
-    if (digit.match(/[^0-9]/)) {
-        return chooseOperator();
-    };
-
-    const display = document.querySelector('.display');
-    if (display.textContent.length < 15) {
-        display.textContent += digit;
-        firstValue.push(digit);
-        console.log(firstValue);
-    }
+    const currentValue = e.target.textContent.trim();
+    const displayWindow = document.querySelector('.display');
+    displayWindow.textContent += currentValue;
 }
 
-const chooseOperator = function() {
-    console.log('hi');
+const chooseFirstValue = function(e) {
+    const digit = e.target.textContent.trim();
+    if (e.target === e.currentTarget) return;
+    if (digit.match(/[^0-9]/)) return;
+
+    if (firstValue.length < 15) firstValue.push(digit);
+    console.log(firstValue);
+}
+
+const chooseOperator = function(e) {
+    operator = [];
+    const chosenOperator = e.target.textContent.trim();
+    if (e.target === e.currentTarget) return;
+    if (chosenOperator.match(/[0-9]/)) return;
+    operator.push(chosenOperator);
+    digits.removeEventListener('click', chooseFirstValue);
+    console.log(operator);
+}
+
+const chooseSecondValue = function(e) {
+    const digit = e.target.textContent.trim();
+    if (e.target === e.currentTarget) return;
+    if (digit.match(/[^0-9]/)) return;
+    if (operator.length) {
+        digit.match(/[0-9]/) ? secondValue.push(digit) && digits.removeEventListener('click', chooseOperator) : chooseOperator();
+        console.log(secondValue);
+    };
+    console.log(operator.length);
 }
 
 const eventListeners = function() {
-    const digits = document.querySelector(".keyboard");
-    digits.addEventListener('click', displayDigit);
+    digits.addEventListener('click', chooseFirstValue);
+    digits.addEventListener('click', chooseSecondValue);
+    digits.addEventListener('click', chooseOperator);
+    digits.addEventListener('click', display);
     // window.addEventListener('keydown', displayDigit);
 }
 
