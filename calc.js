@@ -11,30 +11,47 @@ const multiply = function(num1, num2) {
 
 const subtract = function(num1, num2) {
     let total = num1 - num2;
+    console.log(total);
     return total;
 }
+
 const divide = function(num1, num2) {
     let total = num1 / num2;
     if (total === Infinity) return 'Naaah, leave it.';
     return total;
 }
 
-const operate = function(operator, num1, num2) {
+const operate = function(e) {
+    if (e.target === e.currentTarget) return;
+    const equalitySign = e.target.textContent.trim();
+    if (!equalitySign.match('=')) return;
+    let total = 0;
+    const num1 = Number(firstValue.join(''));
+    const num2 = Number(secondValue.join(''));
+    operator = operator.toString();
+    console.log(num1, num2, operator);
     switch(operator) {
         case '+':
-            return add(num1, num2);
+            total = add(num1, num2);
+            break;
         case '*':
-            return multiply(num1, num2);
-        case '-':
-            return subtract(num1, num2);
+            total = multiply(num1, num2);
+            break;
+        case '−':
+            total = subtract(num1, num2);
+            break;
         case '/':
-            return divide(num1, num2);
+            total = divide(num1, num2);
+            break;
     }
-    return total;
+    console.log(total);
+    digits.removeEventListener('click', display);
+    displayWindow.textContent = total;
 }
 
 const DEF_VALUE = 3.14;
 const digits = document.querySelector(".keyboard");
+const displayWindow = document.querySelector('.display');
 const firstValue = [];
 let operator = [];
 const secondValue = [];
@@ -42,7 +59,6 @@ const secondValue = [];
 const display = function(e) {
     if (e.target === e.currentTarget) return;
     const currentValue = e.target.textContent.trim();
-    const displayWindow = document.querySelector('.display');
     displayWindow.textContent += currentValue;
 }
 
@@ -81,6 +97,7 @@ const eventListeners = function() {
     digits.addEventListener('click', chooseSecondValue);
     digits.addEventListener('click', chooseOperator);
     digits.addEventListener('click', display);
+    digits.addEventListener('click', operate);
     // window.addEventListener('keydown', displayDigit);
 }
 
