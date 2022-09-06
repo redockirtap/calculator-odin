@@ -33,20 +33,34 @@ const operate = function(operator, num1, num2) {
     return total;
 }
 
+
+const firstValue = [];
+const operator = [];
+const secondValue = [];
+
 const displayDigit = function(e) {
-    // console.log(e);
-    // e.stopPropagation();
-    // console.log(e);
-    const digit = e.target.textContent;
-    digit.trim();
+    const digit = e.target.textContent.trim();
     if (e.target === e.currentTarget) return;
+    if (digit.match(/[^0-9]/)) {
+        return chooseOperator();
+    };
+
     const display = document.querySelector('.display');
-    display.textContent = digit;
+    if (display.textContent.length < 15) {
+        display.textContent += digit;
+        firstValue.push(digit);
+        console.log(firstValue);
+    }
+}
+
+const chooseOperator = function() {
+    console.log('hi');
 }
 
 const eventListeners = function() {
     const digits = document.querySelector(".keyboard");
     digits.addEventListener('click', displayDigit);
+    // window.addEventListener('keydown', displayDigit);
 }
 
 eventListeners()
