@@ -26,39 +26,42 @@ const operate = function(e) {
     const equalitySign = e.target.textContent.trim();
     if (!equalitySign.match('=')) return;
     let total = 0;
-    const num1 = Number(firstValue.join(''));
+    let num1 = Number(firstValue.join(''));
     const num2 = Number(secondValue.join(''));
+    secondValue = [];
     operator = operator.toString();
     console.log(num1, num2, operator);
     switch(operator) {
         case '+':
             total = add(num1, num2);
             break;
-        case '*':
+        case '×':
             total = multiply(num1, num2);
             break;
         case '−':
             total = subtract(num1, num2);
             break;
-        case '/':
+        case '÷':
             total = divide(num1, num2);
             break;
     }
+    digits.addEventListener('click', chooseOperator);
+    firstValue = total.toString().split('');
     console.log(total);
-    digits.removeEventListener('click', display);
     displayWindow.textContent = total;
 }
 
 const DEF_VALUE = 3.14;
 const digits = document.querySelector(".keyboard");
 const displayWindow = document.querySelector('.display');
-const firstValue = [];
+let firstValue = [];
 let operator = [];
-const secondValue = [];
+let secondValue = [];
 
 const display = function(e) {
     if (e.target === e.currentTarget) return;
     const currentValue = e.target.textContent.trim();
+    if (currentValue.match(/[(CE)C%,⌫(x²)(x⁻¹)√±]/)) return;
     displayWindow.textContent += currentValue;
 }
 
@@ -72,9 +75,10 @@ const chooseFirstValue = function(e) {
 }
 
 const chooseOperator = function(e) {
-    operator = [];
     const chosenOperator = e.target.textContent.trim();
+    operator = [];
     if (e.target === e.currentTarget) return;
+    if (chosenOperator.match(/[(CE)C%,⌫(x²)(x⁻¹)√±]/)) return;
     if (chosenOperator.match(/[0-9]/)) return;
     operator.push(chosenOperator);
     digits.removeEventListener('click', chooseFirstValue);
