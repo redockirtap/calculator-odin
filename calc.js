@@ -21,13 +21,19 @@ const divide = function(num1, num2) {
     return total;
 }
 
+const pow = function(num1) {
+    console.log(num1**2);
+    return num1**2;
+}
+
 const operate = function(e) {
     if (e.target === e.currentTarget) return;
-    const equalitySign = e.target.textContent.trim();
-    if (!equalitySign.match('=')) return;
-    let total = 0;
     let num1 = Number(firstValue.join(''));
     const num2 = Number(secondValue.join(''));
+    const operationSign = e.target.textContent.trim();
+    if (!operationSign.match(/[(CE)C%,⌫(x²)(x⁻¹)√±=]/)) return;
+    if (operationSign.match(/[(CE)C%,⌫(x²)(x⁻¹)√±]/)) return oneNumberOperation(operationSign, num1, num2);
+    let total = 0;
     secondValue = [];
     operator = operator.toString();
     console.log(num1, num2, operator);
@@ -43,6 +49,10 @@ const operate = function(e) {
             break;
         case '÷':
             total = divide(num1, num2);
+            break;
+        case 'x²':
+            console.log('hiiiii');
+            total = pow(num1);
             break;
     }
     digits.addEventListener('click', chooseOperator);
@@ -96,9 +106,44 @@ const chooseSecondValue = function(e) {
     console.log(operator.length);
 }
 
+const oneNumberOperation = function(operationSign, num1, num2) {
+    let currentNumber;
+    secondValue.length ? currentNumber = num2 : currentNumber = num1;
+    console.log(`I am ${operationSign} and ${currentNumber}`);
+    switch(operationSign) {
+        case 'x²':
+            total = pow(currentNumber);
+            break;
+        case 'C':
+            total = 0;
+            break;
+        case '%':
+            total = currentNumber/100;
+            break;
+        case 'x⁻¹':
+            total = 1/currentNumber;
+            break;
+        }
+    // let counter = 0;
+    const currentNumberString = currentNumber.toString();
+    const totalString = total.toString();
+    let displayString = currentNumberString.replace(currentNumberString, totalString);
+    console.log(currentNumberString, totalString, displayString);
+    // while (counter <= currentNumberString.length+1) {
+    //     let newString = currentNumberString.pop();
+    //     counter++;
+    // }
+    // console.log(newString);
+    digits.addEventListener('click', chooseOperator);
+    firstValue = total.toString().split('');
+    console.log(total);
+    displayWindow.textContent = total;
+}
+
 const eventListeners = function() {
     digits.addEventListener('click', chooseFirstValue);
     digits.addEventListener('click', chooseSecondValue);
+    // digits.addEventListener('click', oneNumberOperation);
     digits.addEventListener('click', chooseOperator);
     digits.addEventListener('click', display);
     digits.addEventListener('click', operate);
