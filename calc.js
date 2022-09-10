@@ -35,9 +35,9 @@ const operate = function(e) {
     if (operationSign.match(/[(CE)C%,⌫(x²)(x⁻¹)√±]/)) return oneNumberOperation(operationSign, num1, num2);
     let total = 0;
     secondValue = [];
-    operator = operator.toString();
-    console.log(num1, num2, operator);
-    switch(operator) {
+    const currentOperator = operator.toString();
+    console.log(num1, num2, currentOperator);
+    switch(currentOperator) {
         case '+':
             total = add(num1, num2);
             break;
@@ -57,6 +57,7 @@ const operate = function(e) {
     }
     digits.addEventListener('click', chooseOperator);
     firstValue = total.toString().split('');
+    operator = [];
     console.log(total);
     displayWindow.textContent = total;
 }
@@ -94,13 +95,14 @@ const chooseOperator = function(e) {
     if (e.target === e.currentTarget) return;
     if (chosenOperator.match(/[(CE)C%,⌫(x²)(x⁻¹)√±]/)) return;
     if (chosenOperator.match(/[0-9]/)) return;
-    console.log(operator);
+    console.log(typeof operator);
     operator.push(chosenOperator);
     if (operator.length > 1) {
-        console.table(operator[0], operator[1]);
+        console.table(operator);
         displayWindow.textContent = displayWindow.textContent.replace(operator[0], operator[1]);
         operator[0] = operator[1];
         operator.pop();
+        console.table(operator);
     } else {displayWindow.textContent += chosenOperator;};
     digits.removeEventListener('click', chooseFirstValue);
     console.log(operator);
