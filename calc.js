@@ -28,6 +28,16 @@ const clearEntry = function() {
     !operator.length ? digits.addEventListener('click', chooseFirstValue) : false;
 }
 
+const clearAll = function() {
+    firstValue = [];
+    operator = [];
+    secondValue = [];
+    displayWindow.textContent = 0;
+    digits.addEventListener('click', chooseFirstValue);
+    digits.addEventListener('click', chooseOperator);
+    digits.addEventListener('click', chooseSecondValue);
+}
+
 const operate = function(e) {
     if (e.target === e.currentTarget) return;
     let num1 = Number(firstValue.join(''));
@@ -70,7 +80,8 @@ const chooseFirstValue = function(e) {
     const digit = e.target.textContent.trim();
     if (e.target === e.currentTarget) return;
     if (digit.match(/[^0-9]/)) return;
-    if (displayWindow.textContent.match(/^0/) || displayWindow.textContent === 'Naaah, leave it.') {
+    console.log(displayWindow.textContent);
+    if (displayWindow.textContent.match(/^0/) || displayWindow.textContent.match('Naaah, leave it.')) {
         console.log('hi', displayWindow.textContent);
         displayWindow.textContent = displayWindow.textContent.replace(displayWindow.textContent, '');
     }
@@ -118,6 +129,9 @@ const oneNumberOperation = function(operationSign, num1, num2) {
             break;
         case '%':
             total = currentNumber/100;
+            break;
+        case 'C':
+            return clearAll();
             break;
         case 'x⁻¹':
             total = 1/currentNumber;
