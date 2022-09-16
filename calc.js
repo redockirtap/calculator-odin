@@ -24,6 +24,10 @@ const pow = function(num1) {
     return num1**2;
 }
 
+const clearEntry = function() {
+    !operator.length ? digits.addEventListener('click', chooseFirstValue) : false;
+}
+
 const operate = function(e) {
     if (e.target === e.currentTarget) return;
     let num1 = Number(firstValue.join(''));
@@ -34,7 +38,6 @@ const operate = function(e) {
     let total = 0;
     secondValue = [];
     const currentOperator = operator.toString();
-    console.log(num1, num2, currentOperator);
     switch(currentOperator) {
         case '+':
             total = add(num1, num2);
@@ -48,15 +51,10 @@ const operate = function(e) {
         case '÷':
             total = divide(num1, num2);
             break;
-        // case 'x²':
-        //     console.log('hiiiii');
-        //     total = pow(num1);
-        //     break;
     }
     digits.addEventListener('click', chooseOperator);
     firstValue = total.toString().split('');
     operator = [];
-    console.log(total);
     displayWindow.textContent = total;
 }
 
@@ -67,25 +65,17 @@ let firstValue = [];
 let operator = [];
 let secondValue = [];
 
-// const display = function(e) {
-//     if (e.target === e.currentTarget) return;
-//     const currentValue = e.target.textContent.trim();
-//     if (currentValue.match(/[(CE)C%,⌫(x²)(x⁻¹)√±]/)) return;
-//     if (operator.length > 1) {
-//         console.log('jooo');
-//         displayWindow.textContent = displayWindow.textContent.replace(operator[0], operator[1]);
-//         operator.pop();
-//     } else {displayWindow.textContent += currentValue;};
-// }
 
 const chooseFirstValue = function(e) {
     const digit = e.target.textContent.trim();
     if (e.target === e.currentTarget) return;
     if (digit.match(/[^0-9]/)) return;
-
+    if (displayWindow.textContent.match(/^0/) || displayWindow.textContent === 'Naaah, leave it.') {
+        console.log('hi', displayWindow.textContent);
+        displayWindow.textContent = displayWindow.textContent.replace(displayWindow.textContent, '');
+    }
     if (firstValue.length < 15) firstValue.push(digit);
     displayWindow.textContent += digit;
-    console.log(firstValue);
 }
 
 const chooseOperator = function(e) {
@@ -93,17 +83,13 @@ const chooseOperator = function(e) {
     if (e.target === e.currentTarget) return;
     if (chosenOperator.match(/[(CE)C%,⌫(x²)(x⁻¹)√±]/)) return;
     if (chosenOperator.match(/[0-9]/)) return;
-    console.log(typeof operator);
     operator.push(chosenOperator);
     if (operator.length > 1) {
-        console.table(operator);
         displayWindow.textContent = displayWindow.textContent.replace(operator[0], operator[1]);
         operator[0] = operator[1];
         operator.pop();
-        console.table(operator);
     } else {displayWindow.textContent += chosenOperator;};
     digits.removeEventListener('click', chooseFirstValue);
-    console.log(operator);
 }
 
 const chooseSecondValue = function(e) {
@@ -112,21 +98,22 @@ const chooseSecondValue = function(e) {
     if (digit.match(/[^0-9]/)) return;
     if (operator.length) {
         digit.match(/[0-9]/) ? secondValue.push(digit) && digits.removeEventListener('click', chooseOperator) : false;
+        if (displayWindow.textContent.match(/(?<=[×−÷+])0/)) {
+            displayWindow.textContent = displayWindow.textContent.replace(/(?<=[×−÷+])0/, '');
+        }
         displayWindow.textContent += digit;
-        console.log(secondValue);
     };
-    console.log(operator.length);
 }
 
 const oneNumberOperation = function(operationSign, num1, num2) {
     let currentNumber;
     secondValue.length ? currentNumber = num2 : currentNumber = num1;
-    console.log(`I am ${operationSign} and ${currentNumber}`);
     switch(operationSign) {
         case 'x²':
             total = pow(currentNumber);
             break;
-        case 'C':
+        case 'CE':
+            clearEntry();
             total = 0;
             break;
         case '%':
@@ -138,33 +125,19 @@ const oneNumberOperation = function(operationSign, num1, num2) {
         }
     if (currentNumber === num2) {
         secondValue = total.toString().split('');
-        console.log(secondValue);
         const regex = new RegExp(`${num2}$`);
+        console.log(secondValue, regex);
         displayWindow.textContent = displayWindow.textContent.replace(regex, total);
-        num2 = total;
-        console.log('I am num2');
     } else {
         firstValue = total.toString().split('');
         displayWindow.textContent = total;
-        console.log('I am num1');
     }
-    // const currentNumberString = currentNumber.toString();
-    // const totalString = total.toString();
-    // let displayString = currentNumberString.replace(currentNumberString, totalString);
-    // console.log(currentNumberString, totalString, displayString);
-
-    // digits.addEventListener('click', chooseOperator);
-    // firstValue = total.toString().split('');
-    // console.log(total);
-    // displayWindow.textContent = total;
 }
 
 const eventListeners = function() {
     digits.addEventListener('click', chooseFirstValue);
     digits.addEventListener('click', chooseSecondValue);
-    // digits.addEventListener('click', oneNumberOperation);
     digits.addEventListener('click', chooseOperator);
-    // digits.addEventListener('click', display);
     digits.addEventListener('click', operate);
     // window.addEventListener('keydown', displayDigit);
 }
