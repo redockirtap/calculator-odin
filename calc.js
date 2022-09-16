@@ -28,6 +28,12 @@ const clearEntry = function() {
     !operator.length ? digits.addEventListener('click', chooseFirstValue) : false;
 }
 
+const deleteDigit = function() {
+    firstValue.pop();
+    secondValue.pop();
+    displayWindow.textContent = displayWindow.textContent.slice(0, -1);
+}
+
 const clearAll = function() {
     firstValue = [];
     operator = [];
@@ -127,12 +133,14 @@ const oneNumberOperation = function(operationSign, num1, num2) {
             clearEntry();
             total = 0;
             break;
-        case '%':
-            total = currentNumber/100;
-            break;
         case 'C':
             return clearAll();
+        case '⌫':
+            return deleteDigit();
             break;
+        case '%':
+            total = currentNumber/100;
+            break;        
         case 'x⁻¹':
             total = 1/currentNumber;
             break;
