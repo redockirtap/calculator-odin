@@ -11,7 +11,6 @@ const multiply = function(num1, num2) {
 
 const subtract = function(num1, num2) {
     let total = num1 - num2;
-    console.log(total);
     return total;
 }
 
@@ -22,7 +21,6 @@ const divide = function(num1, num2) {
 }
 
 const pow = function(num1) {
-    console.log(num1**2);
     return num1**2;
 }
 
@@ -138,20 +136,27 @@ const oneNumberOperation = function(operationSign, num1, num2) {
             total = 1/currentNumber;
             break;
         }
-    // let counter = 0;
-    const currentNumberString = currentNumber.toString();
-    const totalString = total.toString();
-    let displayString = currentNumberString.replace(currentNumberString, totalString);
-    console.log(currentNumberString, totalString, displayString);
-    // while (counter <= currentNumberString.length+1) {
-    //     let newString = currentNumberString.pop();
-    //     counter++;
-    // }
-    // console.log(newString);
-    digits.addEventListener('click', chooseOperator);
-    firstValue = total.toString().split('');
-    console.log(total);
-    displayWindow.textContent = total;
+    if (currentNumber === num2) {
+        secondValue = total.toString().split('');
+        console.log(secondValue);
+        const regex = new RegExp(`${num2}$`);
+        displayWindow.textContent = displayWindow.textContent.replace(regex, total);
+        num2 = total;
+        console.log('I am num2');
+    } else {
+        firstValue = total.toString().split('');
+        displayWindow.textContent = total;
+        console.log('I am num1');
+    }
+    // const currentNumberString = currentNumber.toString();
+    // const totalString = total.toString();
+    // let displayString = currentNumberString.replace(currentNumberString, totalString);
+    // console.log(currentNumberString, totalString, displayString);
+
+    // digits.addEventListener('click', chooseOperator);
+    // firstValue = total.toString().split('');
+    // console.log(total);
+    // displayWindow.textContent = total;
 }
 
 const eventListeners = function() {
