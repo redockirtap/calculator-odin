@@ -29,8 +29,8 @@ const clearEntry = function() {
 }
 
 const deleteDigit = function() {
-    firstValue.pop();
-    secondValue.pop();
+    if (displayWindow.textContent.match(/(?<=[×−÷+])$/)) return;
+    operator.length ? secondValue.pop() : firstValue.pop();
     displayWindow.textContent = displayWindow.textContent.slice(0, -1);
 }
 
@@ -89,6 +89,7 @@ const operate = function(e) {
     firstValue = total.toString().split('');
     operator = [];
     displayWindow.textContent = total;
+    if (displayWindow.textContent.match('.')) displayWindow.textContent = displayWindow.textContent.replace('.', ',');
 }
 
 const DEF_VALUE = 3.14;
@@ -175,6 +176,7 @@ const oneNumberOperation = function(operationSign, num1, num2) {
         firstValue = total.toString().split('');
         displayWindow.textContent = total;
     }
+    if (displayWindow.textContent.match('.')) displayWindow.textContent = displayWindow.textContent.replace('.', ',');
 }
 
 const eventListeners = function() {
