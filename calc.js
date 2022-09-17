@@ -61,35 +61,61 @@ const addDecimal = function () {
     displayWindow.textContent += ',';
 }
 
+const displaySettings = function() {
+    console.log('display')
+    // const regex = new RegExp(`(?<=${firstValue[firstValue.length - 3]})`);
+    // console.log(firstValue[firstValue.length - 3], regex);
+    // if (displayWindow.textContent.match(/,/)) return;
+    // if (firstValue.length === 4) displayWindow.textContent = displayWindow.textContent.replace(regex, ' ');
+    // if (firstValue.length === 7) displayWindow.textContent = displayWindow.textContent.replace(regex, ' ');
+    // // if (displayWindow.textContent.match(/\d{3}$/)) displayWindow.textContent = displayWindow.textContent.replace(regex, ' ');
+    // // if (firstValue.length === 4
+    // //     || firstValue.length === 7 
+    // //     || firstValue.length === 10 
+    // //     || firstValue.length === 13 
+    // //     || firstValue.length === 16
+    // //     || firstValue.length === 19) {
+    // //         displayWindow.textContent += ' ';
+    // //     }; 
+}
+
 const operate = function(e) {
     if (e.target === e.currentTarget) return;
     let num1 = Number(firstValue.join(''));
     const num2 = Number(secondValue.join(''));
     const operationSign = e.target.textContent.trim();
-    if (!operationSign.match(/[(CE)C%,⌫(x²)(x⁻¹)√±=]/)) return;
+    if (!operationSign.match(/[(CE)C%,⌫(x²)(x⁻¹)√×−÷+=]/)) return;
     if (operationSign.match(/[(CE)C%,⌫(x²)(x⁻¹)√±]/)) return oneNumberOperation(operationSign, num1, num2);
     let total = 0;
-    secondValue = [];
-    const currentOperator = operator.toString();
-    switch(currentOperator) {
-        case '+':
-            total = add(num1, num2);
-            break;
-        case '×':
-            total = multiply(num1, num2);
-            break;
-        case '−':
-            total = subtract(num1, num2);
-            break;
-        case '÷':
-            total = divide(num1, num2);
-            break;
+    let currentOperator = operator.toString();
+    if (secondValue.length) {
+        switch(currentOperator) {
+            case '+':
+                total = add(num1, num2);
+                break;
+            case '×':
+                total = multiply(num1, num2);
+                break;
+            case '−':
+                total = subtract(num1, num2);
+                break;
+            case '÷':
+                total = divide(num1, num2);
+                break;
+        }
+        digits.addEventListener('click', chooseOperator);
+        firstValue = total.toString().split('');
+        secondValue = [];
+        operator = [];
+        if (operationSign.match(/[×−÷+]/)){
+            displayWindow.textContent = `${total}${operationSign}`;
+            operator.push(operationSign);
+            // currentOperator = operationSign;
+            digits.addEventListener('click', chooseSecondValue);
+        } else {displayWindow.textContent = total};
+        // displayWindow.textContent = total;
+        if (displayWindow.textContent.match('.')) displayWindow.textContent = displayWindow.textContent.replace('.', ',');
     }
-    digits.addEventListener('click', chooseOperator);
-    firstValue = total.toString().split('');
-    operator = [];
-    displayWindow.textContent = total;
-    if (displayWindow.textContent.match('.')) displayWindow.textContent = displayWindow.textContent.replace('.', ',');
 }
 
 const DEF_VALUE = 3.14;
@@ -116,7 +142,7 @@ const chooseFirstValue = function(e) {
 const chooseOperator = function(e) {
     const chosenOperator = e.target.textContent.trim();
     if (e.target === e.currentTarget) return;
-    if (chosenOperator.match(/[(CE)C%,⌫(x²)(x⁻¹)√±]/)) return;
+    if (chosenOperator.match(/[(CE)C%,⌫(x²)(x⁻¹)√±=]/)) return;
     if (chosenOperator.match(/[0-9]/)) return;
     operator.push(chosenOperator);
     if (operator.length > 1) {
@@ -184,6 +210,7 @@ const eventListeners = function() {
     digits.addEventListener('click', chooseSecondValue);
     digits.addEventListener('click', chooseOperator);
     digits.addEventListener('click', operate);
+    digits.addEventListener('click', displaySettings);
     // window.addEventListener('keydown', displayDigit);
 }
 
