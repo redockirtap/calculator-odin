@@ -15,8 +15,8 @@ const subtract = function(num1, num2) {
 }
 
 const divide = function(num1, num2) {
+    if (num2 === 0) return 'Naaah, leave it.';
     let total = num1 / num2;
-    if (total === Infinity) return 'Naaah, leave it.';
     return total;
 }
 
@@ -32,6 +32,16 @@ const deleteDigit = function() {
     firstValue.pop();
     secondValue.pop();
     displayWindow.textContent = displayWindow.textContent.slice(0, -1);
+}
+
+const sqrt = function(num1) {
+    if (num1 < 0) return 'Go study some math, bro';
+    return Math.sqrt(num1);
+}
+
+const inverse = function(num1) {
+    if (num1 === 0) return 'Just stop, okay?';
+    return 1/num1;
 }
 
 const clearAll = function() {
@@ -137,12 +147,14 @@ const oneNumberOperation = function(operationSign, num1, num2) {
             return clearAll();
         case '⌫':
             return deleteDigit();
-            break;
         case '%':
             total = currentNumber/100;
             break;        
         case 'x⁻¹':
-            total = 1/currentNumber;
+            total = inverse(currentNumber);
+            break;
+        case '√':
+            total = sqrt(currentNumber);
             break;
         }
     if (currentNumber === num2) {
