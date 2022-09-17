@@ -54,6 +54,13 @@ const clearAll = function() {
     digits.addEventListener('click', chooseSecondValue);
 }
 
+const addDecimal = function () {
+    if (!operator.length && displayWindow.textContent.match(/(?<=[0-9]),/)) return;
+    if (displayWindow.textContent.match(/(?<=[×−÷+])[0-9],/)) return;
+    displayWindow.textContent.match(/(?<=[×−÷+])[0-9]/) ? secondValue.push('.') : firstValue.push('.');
+    displayWindow.textContent += ',';
+}
+
 const operate = function(e) {
     if (e.target === e.currentTarget) return;
     let num1 = Number(firstValue.join(''));
@@ -125,7 +132,7 @@ const chooseSecondValue = function(e) {
     if (digit.match(/[^0-9]/)) return;
     if (operator.length) {
         digit.match(/[0-9]/) ? secondValue.push(digit) && digits.removeEventListener('click', chooseOperator) : false;
-        if (displayWindow.textContent.match(/(?<=[×−÷+])0/)) {
+        if (displayWindow.textContent.match(/(?<=[×−÷+])0/) && !displayWindow.textContent.match(/(?<=[×−÷+])[0-9],/)) {
             displayWindow.textContent = displayWindow.textContent.replace(/(?<=[×−÷+])0/, '');
         }
         displayWindow.textContent += digit;
@@ -147,6 +154,8 @@ const oneNumberOperation = function(operationSign, num1, num2) {
             return clearAll();
         case '⌫':
             return deleteDigit();
+        case ',':
+            return addDecimal();      
         case '%':
             total = currentNumber/100;
             break;        
