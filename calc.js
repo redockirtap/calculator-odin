@@ -1,27 +1,32 @@
 // Basic math logic goes here
 const add = function(num1, num2) {
     let total = num1 + num2;
+    total = Math.round(total*100)/100;
     return total;
 }
 
 const multiply = function(num1, num2) {
     let total = num1 * num2;
+    total = Math.round(total*100)/100;
     return total;
 }
 
 const subtract = function(num1, num2) {
     let total = num1 - num2;
+    total = Math.round(total*100)/100;
     return total;
 }
 
 const divide = function(num1, num2) {
     if (num2 === 0) return 'Naaah, leave it';
     let total = num1 / num2;
+    total = Math.round(total*100)/100;
     return total;
 }
 
 const pow = function(num1) {
-    return num1**2;
+    total = num1**2;
+    return Math.round(total*100)/100;
 }
 
 const clearEntry = function() {
@@ -36,12 +41,15 @@ const deleteDigit = function() {
 
 const sqrt = function(num1) {
     if (num1 < 0) return 'Go study some math, bro';
-    return Math.sqrt(num1);
+    total = Math.sqrt(num1);
+    return total = Math.round(total*100)/100;
 }
 
 const inverse = function(num1) {
     if (num1 === 0) return 'Just stop, okay?';
-    return 1/num1;
+    total = 1/num1;
+    total = Math.round(total*100)/100;
+    return total;
 }
 
 const clearAll = function() {
@@ -124,7 +132,7 @@ const chooseFirstValue = function(e) {
         console.log('hi', displayWindow.textContent);
         displayWindow.textContent = displayWindow.textContent.replace(displayWindow.textContent, '');
     }
-    if (firstValue.length < 15) {
+    if (firstValue.length < 9) {
         firstValue.push(digit);
         displayWindow.textContent += digit;
     }   
@@ -148,6 +156,7 @@ const chooseSecondValue = function(e) {
     const digit = e.target.textContent.trim();
     if (e.target === e.currentTarget) return;
     if (digit.match(/[^0-9]/)) return;
+    if (secondValue.length === 8) return;
     if (operator.length) {
         digit.match(/[0-9]/) ? secondValue.push(digit) && digits.removeEventListener('click', chooseOperator) : false;
         if (displayWindow.textContent.match(/(?<=[×−÷+])0/) && !displayWindow.textContent.match(/(?<=[×−÷+])[0-9],/)) {
