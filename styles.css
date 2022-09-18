@@ -14,7 +14,6 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background: rgb(48, 13, 73);
     background: linear-gradient(225deg, rgba(48,13,73,1) 7%, rgba(164,3,31,1) 51%, rgba(205,247,63,1) 93%);
 }
 
@@ -29,7 +28,7 @@ body {
     height: 73vh;
     border-radius: 12px;
     box-shadow: 3px 3px 10px rgb(37, 37, 37);
-    background: linear-gradient(50deg, rgba(205,247,63,0.1) 1%, rgba(48,13,73,0.3) 13%, rgba(164,3,31,0.3) 93%);
+    background-color: linear-gradient(50deg, rgba(205,247,63,0.1) 1%, rgba(48,13,73,0.3) 13%, rgba(164,3,31,0.3) 93%);
 }
 
 .answer {

@@ -5,7 +5,7 @@ let firstValue = [];
 let operator = [];
 let secondValue = [];
 
-// Basic math logic goes here
+// Calculator logic goes here
 const add = function(num1, num2) {
     let total = num1 + num2;
     total = Math.round(total*100)/100;
@@ -214,7 +214,7 @@ const oneNumberOperation = function(operationSign, num1, num2) {
             break;
         case 'CE':
             clearEntry();
-            total = 0;
+            total = '';
             break;
         case 'C':
             return clearAll();
@@ -243,7 +243,17 @@ const eventListeners = function() {
     digits.addEventListener('click', chooseSecondValue);
     digits.addEventListener('click', chooseOperator);
     digits.addEventListener('click', operate);
-    // window.addEventListener('keydown', displayDigit);
+    window.addEventListener('keydown', keyboard);
+}
+
+const keyboard = function(e) {
+    const digit = document.querySelector(`div[data-key='${e.keyCode}']`);
+    if (!digit) return;
+    digit.click();
+    console.log(e);   
 }
 
 eventListeners()
+
+
+
