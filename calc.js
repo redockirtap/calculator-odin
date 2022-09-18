@@ -15,7 +15,7 @@ const subtract = function(num1, num2) {
 }
 
 const divide = function(num1, num2) {
-    if (num2 === 0) return 'Naaah, leave it.';
+    if (num2 === 0) return 'Naaah, leave it';
     let total = num1 / num2;
     return total;
 }
@@ -61,22 +61,12 @@ const addDecimal = function () {
     displayWindow.textContent += ',';
 }
 
+const changeSign = function () {
+    console.log('I was too lazy to create this function :-(');
+}
+
 const displaySettings = function() {
     console.log('display')
-    // const regex = new RegExp(`(?<=${firstValue[firstValue.length - 3]})`);
-    // console.log(firstValue[firstValue.length - 3], regex);
-    // if (displayWindow.textContent.match(/,/)) return;
-    // if (firstValue.length === 4) displayWindow.textContent = displayWindow.textContent.replace(regex, ' ');
-    // if (firstValue.length === 7) displayWindow.textContent = displayWindow.textContent.replace(regex, ' ');
-    // // if (displayWindow.textContent.match(/\d{3}$/)) displayWindow.textContent = displayWindow.textContent.replace(regex, ' ');
-    // // if (firstValue.length === 4
-    // //     || firstValue.length === 7 
-    // //     || firstValue.length === 10 
-    // //     || firstValue.length === 13 
-    // //     || firstValue.length === 16
-    // //     || firstValue.length === 19) {
-    // //         displayWindow.textContent += ' ';
-    // //     }; 
 }
 
 const operate = function(e) {
@@ -84,8 +74,8 @@ const operate = function(e) {
     let num1 = Number(firstValue.join(''));
     const num2 = Number(secondValue.join(''));
     const operationSign = e.target.textContent.trim();
-    if (!operationSign.match(/[(CE)C%,⌫(x²)(x⁻¹)√×−÷+=]/)) return;
-    if (operationSign.match(/[(CE)C%,⌫(x²)(x⁻¹)√±]/)) return oneNumberOperation(operationSign, num1, num2);
+    if (!operationSign.match(/[(CE)C%,⌫(x²)(x⁻¹)🐸√×−÷+=]/)) return;
+    if (operationSign.match(/[(CE)C%,⌫(x²)(x⁻¹)√🐸]/)) return oneNumberOperation(operationSign, num1, num2);
     let total = 0;
     let currentOperator = operator.toString();
     if (secondValue.length) {
@@ -130,19 +120,20 @@ const chooseFirstValue = function(e) {
     const digit = e.target.textContent.trim();
     if (e.target === e.currentTarget) return;
     if (digit.match(/[^0-9]/)) return;
-    console.log(displayWindow.textContent);
-    if (displayWindow.textContent.match(/^0/) || displayWindow.textContent.match('Naaah, leave it.')) {
+    if (!displayWindow.textContent.match(/[1-9]|[,]/)) {
         console.log('hi', displayWindow.textContent);
         displayWindow.textContent = displayWindow.textContent.replace(displayWindow.textContent, '');
     }
-    if (firstValue.length < 15) firstValue.push(digit);
-    displayWindow.textContent += digit;
+    if (firstValue.length < 15) {
+        firstValue.push(digit);
+        displayWindow.textContent += digit;
+    }   
 }
 
 const chooseOperator = function(e) {
     const chosenOperator = e.target.textContent.trim();
     if (e.target === e.currentTarget) return;
-    if (chosenOperator.match(/[(CE)C%,⌫(x²)(x⁻¹)√±=]/)) return;
+    if (chosenOperator.match(/[(CE)C%,⌫(x²)(x⁻¹)√🐸=]/)) return;
     if (chosenOperator.match(/[0-9]/)) return;
     operator.push(chosenOperator);
     if (operator.length > 1) {
@@ -182,7 +173,10 @@ const oneNumberOperation = function(operationSign, num1, num2) {
         case '⌫':
             return deleteDigit();
         case ',':
-            return addDecimal();      
+            return addDecimal();
+        case '🐸':
+            console.log('hi');
+            return changeSign();       
         case '%':
             total = currentNumber/100;
             break;        
