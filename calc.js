@@ -48,7 +48,7 @@ const sqrt = function(num1) {
 const inverse = function(num1) {
     if (num1 === 0) return 'Just stop, okay?';
     total = 1/num1;
-    total = Math.round(total*100)/100;
+    total = Math.round(total*10000)/10000;
     return total;
 }
 
@@ -116,7 +116,6 @@ const operate = function(e) {
     }
 }
 
-const DEF_VALUE = 3.14;
 const digits = document.querySelector(".keyboard");
 const displayWindow = document.querySelector('.display');
 let firstValue = [];
