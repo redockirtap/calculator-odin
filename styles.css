@@ -5,7 +5,7 @@ body, html {
     height: 100vh;
     width: 100vw;
     font-family: 'JetBrains Mono', monospace;
-    font-size: 1.5em;
+    font-size: 1.4em;
     text-align: center;
     color: beige;
 }
@@ -23,9 +23,9 @@ body {
     gap: 6px;
     flex-direction: column;
     align-items: center;
-    min-width: 400px;
+    min-width: 365px;
     min-height: 400px;
-    width: 27vw;
+    width: 23vw;
     height: 73vh;
     border-radius: 12px;
     box-shadow: 3px 3px 10px rgb(37, 37, 37);
@@ -33,7 +33,7 @@ body {
 }
 
 .answer {
-    font-size: 0.5em;
+    font-size: 0.8em;
     display: flex;
     justify-content: flex-end;
     align-items: flex-end;
@@ -53,7 +53,8 @@ body {
 
 .keyboard {
     display: grid;
-    min-height: 60vh;
+    min-height: 56vh;
+    /* margin-bottom: 1vh; */
     width: 95%;
     grid-template-rows: repeat(6, minmax(50px, 1fr));
     grid-template-columns: repeat(4, minmax(50px, 1fr));

@@ -1,3 +1,10 @@
+const digits = document.querySelector(".keyboard");
+const displayWindow = document.querySelector('.display');
+const answerWindow = document.querySelector('.answer');
+let firstValue = [];
+let operator = [];
+let secondValue = [];
+
 // Basic math logic goes here
 const add = function(num1, num2) {
     let total = num1 + num2;
@@ -46,7 +53,7 @@ const sqrt = function(num1) {
 }
 
 const inverse = function(num1) {
-    if (num1 === 0) return 'Just stop, okay?';
+    if (num1 === 0) return 'Just stop';
     total = 1/num1;
     total = Math.round(total*10000)/10000;
     return total;
@@ -76,11 +83,7 @@ const changeSign = function () {
     console.log('I was too lazy to create this function :-(');
 }
 
-const operate = function(e) {
-    if (e.target === e.currentTarget) return;
-    let num1 = Number(firstValue.join(''));
-    const num2 = Number(secondValue.join(''));
-    const operationSign = e.target.textContent.trim();
+const isNewEvaluation = function(operationSign) {
     if (answerWindow.textContent.length > 0 && operationSign.match(/[0-9]/) && displayWindow.textContent.length === 0) {
         console.log(operationSign);
         digits.addEventListener('click', chooseFirstValue);
@@ -90,6 +93,42 @@ const operate = function(e) {
         firstValue.push(operationSign);
         secondValue = [];
     } 
+}
+
+const differentDisplayingOfAnswer = function(total, operationSign) {
+    if (operationSign.match(/[×−÷+]/)){
+        answerWindow.textContent = `${total}${operationSign}`;
+        displayWindow.textContent = '';
+        operator.push(operationSign);
+        digits.addEventListener('click', chooseSecondValue);
+    } else {
+        answerWindow.textContent = total;
+        displayWindow.textContent = '';
+    };
+    if (displayWindow.textContent.match('.')) displayWindow.textContent = displayWindow.textContent.replace('.', ',');
+    if (answerWindow.textContent.match('.')) answerWindow.textContent = answerWindow.textContent.replace('.', ',');
+}
+
+const differentDisplayingOfOneNumberOperationAnswer = function(total, currentNumber, num2) {
+    if (currentNumber === num2) {
+        secondValue = total.toString().split('');
+        const regex = new RegExp(`${num2}$`);
+        console.log(secondValue, regex);
+        displayWindow.textContent = displayWindow.textContent.replace(regex, total);
+    } else {
+        firstValue = total.toString().split('');
+        answerWindow.textContent = total;
+        displayWindow.textContent = '';
+    }
+    if (displayWindow.textContent.match('.')) displayWindow.textContent = displayWindow.textContent.replace('.', ',');
+}
+
+const operate = function(e) {
+    if (e.target === e.currentTarget) return;
+    let num1 = Number(firstValue.join(''));
+    const num2 = Number(secondValue.join(''));
+    const operationSign = e.target.textContent.trim();
+    isNewEvaluation(operationSign);
     if (!operationSign.match(/[(CE)C%,⌫(x²)(x⁻¹)🐸√×−÷+=]/)) return;
     if (operationSign.match(/[(CE)C%,⌫(x²)(x⁻¹)√🐸]/)) return oneNumberOperation(operationSign, num1, num2);
     let total = 0;
@@ -113,27 +152,9 @@ const operate = function(e) {
         firstValue = total.toString().split('');
         secondValue = [];
         operator = [];
-        if (operationSign.match(/[×−÷+]/)){
-            answerWindow.textContent = `${total}${operationSign}`;
-            displayWindow.textContent = '';
-            operator.push(operationSign);
-            digits.addEventListener('click', chooseSecondValue);
-        } else {
-            answerWindow.textContent = total;
-            displayWindow.textContent = '';
-        };
-        if (displayWindow.textContent.match('.')) displayWindow.textContent = displayWindow.textContent.replace('.', ',');
-        if (answerWindow.textContent.match('.')) answerWindow.textContent = answerWindow.textContent.replace('.', ',');
+        differentDisplayingOfAnswer(total, operationSign);
     }
 }
-
-const digits = document.querySelector(".keyboard");
-const displayWindow = document.querySelector('.display');
-const answerWindow = document.querySelector('.answer');
-let firstValue = [];
-let operator = [];
-let secondValue = [];
-
 
 const chooseFirstValue = function(e) {
     const digit = e.target.textContent.trim();
@@ -170,7 +191,7 @@ const chooseSecondValue = function(e) {
     const digit = e.target.textContent.trim();
     if (e.target === e.currentTarget) return;
     if (digit.match(/[^0-9]/)) return;
-    if (secondValue.length === 8) return;
+    if (secondValue.length > 8) return;
     if (operator.length) {
         if (answerWindow.textContent.length < 1) {
             answerWindow.textContent =  displayWindow.textContent;
@@ -214,16 +235,7 @@ const oneNumberOperation = function(operationSign, num1, num2) {
             total = sqrt(currentNumber);
             break;
         }
-    if (currentNumber === num2) {
-        secondValue = total.toString().split('');
-        const regex = new RegExp(`${num2}$`);
-        console.log(secondValue, regex);
-        displayWindow.textContent = displayWindow.textContent.replace(regex, total);
-    } else {
-        firstValue = total.toString().split('');
-        displayWindow.textContent = total;
-    }
-    if (displayWindow.textContent.match('.')) displayWindow.textContent = displayWindow.textContent.replace('.', ',');
+    differentDisplayingOfOneNumberOperationAnswer(total, currentNumber, num2);
 }
 
 const eventListeners = function() {
