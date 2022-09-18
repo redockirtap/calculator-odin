@@ -75,7 +75,6 @@ const addDecimal = function () {
     if (!operator.length && displayWindow.textContent.match(/(?<=[0-9]),/)) return;
     if (operator.length && displayWindow.textContent.match(/[0-9],/)) return;
     answerWindow.textContent.length > 0 ? secondValue.push('.') : firstValue.push('.');
-    console.log(secondValue);
     displayWindow.textContent += ',';
 }
 
@@ -85,7 +84,6 @@ const changeSign = function () {
 
 const isNewEvaluation = function(operationSign) {
     if (answerWindow.textContent.length > 0 && operationSign.match(/[0-9]/) && displayWindow.textContent.length === 0) {
-        console.log(operationSign);
         digits.addEventListener('click', chooseFirstValue);
         answerWindow.textContent = '';
         displayWindow.textContent += operationSign;
@@ -113,7 +111,6 @@ const differentDisplayingOfOneNumberOperationAnswer = function(total, currentNum
     if (currentNumber === num2) {
         secondValue = total.toString().split('');
         const regex = new RegExp(`${num2}$`);
-        console.log(secondValue, regex);
         displayWindow.textContent = displayWindow.textContent.replace(regex, total);
     } else {
         firstValue = total.toString().split('');
@@ -161,7 +158,6 @@ const chooseFirstValue = function(e) {
     if (e.target === e.currentTarget) return;
     if (digit.match(/[^0-9]/)) return;
     if (!displayWindow.textContent.match(/[1-9]|[,]/)) {
-        console.log('hi', displayWindow.textContent);
         displayWindow.textContent = displayWindow.textContent.replace(displayWindow.textContent, '');
     }
     if (firstValue.length < 9) {
@@ -223,7 +219,6 @@ const oneNumberOperation = function(operationSign, num1, num2) {
         case ',':
             return addDecimal();
         case '🐸':
-            console.log('hi');
             return changeSign();       
         case '%':
             total = currentNumber/100;
@@ -249,8 +244,7 @@ const eventListeners = function() {
 const keyboard = function(e) {
     const digit = document.querySelector(`div[data-key='${e.keyCode}']`);
     if (!digit) return;
-    digit.click();
-    console.log(e);   
+    digit.click();   
 }
 
 eventListeners()
