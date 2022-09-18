@@ -67,7 +67,7 @@ const addDecimal = function () {
     if (displayWindow.textContent.match(/^\W/)) return;
     if (!operator.length && displayWindow.textContent.match(/(?<=[0-9]),/)) return;
     if (operator.length && displayWindow.textContent.match(/[0-9],/)) return;
-    answerWindow.textContent.match(/,/) ? secondValue.push('.') : firstValue.push('.');
+    answerWindow.textContent.length > 0 ? secondValue.push('.') : firstValue.push('.');
     console.log(secondValue);
     displayWindow.textContent += ',';
 }
@@ -76,15 +76,20 @@ const changeSign = function () {
     console.log('I was too lazy to create this function :-(');
 }
 
-const displaySettings = function() {
-    console.log('display')
-}
-
 const operate = function(e) {
     if (e.target === e.currentTarget) return;
     let num1 = Number(firstValue.join(''));
     const num2 = Number(secondValue.join(''));
     const operationSign = e.target.textContent.trim();
+    if (answerWindow.textContent.length > 0 && operationSign.match(/[0-9]/) && displayWindow.textContent.length === 0) {
+        console.log(operationSign);
+        digits.addEventListener('click', chooseFirstValue);
+        answerWindow.textContent = '';
+        displayWindow.textContent += operationSign;
+        firstValue = [];
+        firstValue.push(operationSign);
+        secondValue = [];
+    } 
     if (!operationSign.match(/[(CE)C%,⌫(x²)(x⁻¹)🐸√×−÷+=]/)) return;
     if (operationSign.match(/[(CE)C%,⌫(x²)(x⁻¹)√🐸]/)) return oneNumberOperation(operationSign, num1, num2);
     let total = 0;
@@ -172,8 +177,8 @@ const chooseSecondValue = function(e) {
             displayWindow.textContent = '';
         }
         digit.match(/[0-9]/) ? secondValue.push(digit) && digits.removeEventListener('click', chooseOperator) : false;
-        if (displayWindow.textContent.match(/(?<=[×−÷+])0/) && !displayWindow.textContent.match(/(?<=[×−÷+])[0-9],/)) {
-            displayWindow.textContent = displayWindow.textContent.replace(/(?<=[×−÷+])0/, '');
+        if (displayWindow.textContent.match(/^0/) && !displayWindow.textContent.match(/[0-9],/)) {
+            displayWindow.textContent = displayWindow.textContent.replace('0', '');
         }
         displayWindow.textContent += digit;
     };
@@ -226,7 +231,6 @@ const eventListeners = function() {
     digits.addEventListener('click', chooseSecondValue);
     digits.addEventListener('click', chooseOperator);
     digits.addEventListener('click', operate);
-    digits.addEventListener('click', displaySettings);
     // window.addEventListener('keydown', displayDigit);
 }
 
