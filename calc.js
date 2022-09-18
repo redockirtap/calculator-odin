@@ -56,6 +56,7 @@ const clearAll = function() {
     firstValue = [];
     operator = [];
     secondValue = [];
+    answerWindow.textContent = '';
     displayWindow.textContent = 0;
     digits.addEventListener('click', chooseFirstValue);
     digits.addEventListener('click', chooseOperator);
@@ -63,9 +64,11 @@ const clearAll = function() {
 }
 
 const addDecimal = function () {
+    if (displayWindow.textContent.match(/^\W/)) return;
     if (!operator.length && displayWindow.textContent.match(/(?<=[0-9]),/)) return;
-    if (displayWindow.textContent.match(/(?<=[×−÷+])[0-9],/)) return;
-    displayWindow.textContent.match(/(?<=[×−÷+])[0-9]/) ? secondValue.push('.') : firstValue.push('.');
+    if (operator.length && displayWindow.textContent.match(/[0-9],/)) return;
+    answerWindow.textContent.match(/,/) ? secondValue.push('.') : firstValue.push('.');
+    console.log(secondValue);
     displayWindow.textContent += ',';
 }
 
@@ -106,18 +109,22 @@ const operate = function(e) {
         secondValue = [];
         operator = [];
         if (operationSign.match(/[×−÷+]/)){
-            displayWindow.textContent = `${total}${operationSign}`;
+            answerWindow.textContent = `${total}${operationSign}`;
+            displayWindow.textContent = '';
             operator.push(operationSign);
-            // currentOperator = operationSign;
             digits.addEventListener('click', chooseSecondValue);
-        } else {displayWindow.textContent = total};
-        // displayWindow.textContent = total;
+        } else {
+            answerWindow.textContent = total;
+            displayWindow.textContent = '';
+        };
         if (displayWindow.textContent.match('.')) displayWindow.textContent = displayWindow.textContent.replace('.', ',');
+        if (answerWindow.textContent.match('.')) answerWindow.textContent = answerWindow.textContent.replace('.', ',');
     }
 }
 
 const digits = document.querySelector(".keyboard");
 const displayWindow = document.querySelector('.display');
+const answerWindow = document.querySelector('.answer');
 let firstValue = [];
 let operator = [];
 let secondValue = [];
@@ -145,9 +152,12 @@ const chooseOperator = function(e) {
     operator.push(chosenOperator);
     if (operator.length > 1) {
         displayWindow.textContent = displayWindow.textContent.replace(operator[0], operator[1]);
+        answerWindow.textContent = answerWindow.textContent.replace(operator[0], operator[1]);
         operator[0] = operator[1];
         operator.pop();
-    } else {displayWindow.textContent += chosenOperator;};
+    } else {
+        answerWindow.textContent.match(/[1-9]/) ? answerWindow.textContent += chosenOperator : displayWindow.textContent += chosenOperator;
+    };
     digits.removeEventListener('click', chooseFirstValue);
 }
 
@@ -157,6 +167,10 @@ const chooseSecondValue = function(e) {
     if (digit.match(/[^0-9]/)) return;
     if (secondValue.length === 8) return;
     if (operator.length) {
+        if (answerWindow.textContent.length < 1) {
+            answerWindow.textContent =  displayWindow.textContent;
+            displayWindow.textContent = '';
+        }
         digit.match(/[0-9]/) ? secondValue.push(digit) && digits.removeEventListener('click', chooseOperator) : false;
         if (displayWindow.textContent.match(/(?<=[×−÷+])0/) && !displayWindow.textContent.match(/(?<=[×−÷+])[0-9],/)) {
             displayWindow.textContent = displayWindow.textContent.replace(/(?<=[×−÷+])0/, '');
